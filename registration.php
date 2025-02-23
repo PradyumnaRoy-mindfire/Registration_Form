@@ -12,106 +12,62 @@
 
     
     <?php
-    include __DIR__.'/php/exception.php';
+        include __DIR__.'/php/exception.php';
+        include __DIR__.'/php/database.php';
 
-    if(session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
-    try {
-        //For empty field validations
-        include $_SERVER['DOCUMENT_ROOT'].'/php/validation.php';
-
-        $jsonFile = $_SERVER['DOCUMENT_ROOT'].'/data.json';
-
-        if(!file_exists($jsonFile)) {
-            throw new Exception("File not found.....");
+        if(session_status() == PHP_SESSION_NONE) {
+            session_start();
         }
-    
-    
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $isEmpty == false && $isUniqueUser == true) {
-            $fname = $_POST['fname'];
-            $lname = $_POST['lname'] ;
-            $pass = $_POST['pass'] ;
-            $phno = $_POST['phno'] ;
-            $email = $_POST['email'] ;
-            $gender = isset($_POST['gender']) ? $_POST['gender']:"";
-            $address = $_POST['address'] ;
-            $pin = $_POST['pin'] ;
-            $terms = isset($_POST['terms']) ? true : false;
-            $photoPath = ""; //For photo
+        try {
+            //For empty field validations
+            include $_SERVER['DOCUMENT_ROOT'].'/php/validation.php';
 
-                // checking if the photo is uploaded or not
-            if(isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
-                $photo = $_FILES['photo'];
-                    // Folder where to save
-                $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/profilePhoto/';
-                    //creating unique name for each photo
-
-                if(!file_exists($uploadDir) || !is_writable($uploadDir)) {
-                    throw new Exception("Uploadin g directory is not exist or file is not writable");
-                }
-
-
-                $photoName  = uniqid()."_".basename($photo['name']);
-                $photoTmpPath = $photo['tmp_name'];
-                $photoPath = $uploadDir . $photoName;
-
-                move_uploaded_file($photoTmpPath, $photoPath);
-            }
-            
-                //if error occured during 
-            if($_FILES['photo']['error'] != UPLOAD_ERR_OK) {
-                throw new Exception("Photo upload failed");
-            }
-            
-                //if file exist 
-            if (file_exists($jsonFile)) {
-                $jsonData = file_get_contents($jsonFile);
-                $data = json_decode($jsonData, true); 
-            } else {
-                // If the file does not exist, create an empty array
-                $data = array(); 
-            }
-            $length = sizeof($data);
-            $formData = array(
-                'userId' => sizeof($data)+1,
-                'fname' => $fname,
-                'lname' => $lname,
-                'pass' => $pass,
-                'phno' => $phno,
-                'email' => $email,
-                'gender' => $gender,
-                'address' => $address,
-                'pin' => $pin,
-                'photo' => $photoPath,
-                'terms' => $terms,
-                'favourite' => [],
-            );
-                //append the formdata to the data array
-            $data[$length+1] = $formData;
-
-            // Encode the data back into a JSON format
-            $jsonData = json_encode($data, JSON_PRETTY_PRINT);
-
-
-            // Save again the new data into the JSON file
-            file_put_contents($jsonFile, $jsonData);
-
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $isUniqueUser == true && $isEmpty == false) {
+                $fname = $_POST['fname'];
+                $lname = $_POST['lname'] ;
+                $pass = $_POST['pass'] ;
+                $phno = $_POST['phno'] ;
+                $email = $_POST['email'] ;
+                $gender = isset($_POST['gender']) ? $_POST['gender']:"";
+                $adress = $_POST['adress'] ;
+                $pin = $_POST['pin'] ;
+                $terms = isset($_POST['terms']) ? true : false;
+                $photoPath = ""; //For photo
                 
-            if (file_put_contents($jsonFile, $jsonData) === false) {
-                throw new Exception("Failed to write data to JSON file.");
-            }
+                    // checking if the photo is uploaded or not
+                if(isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
+                    $photo = $_FILES['photo'];
+                        // Folder where to save
+                    $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/test/Form/profilePhoto/';
+                        //creating unique name for each photo
 
-                //for registration pop up
-            $_SESSION['registration'] = "registered Successfully";
-            // location will came back to this page itself ,it prevents from storing data in to json file while reloading
-            header("Location: http://".$_SERVER['SERVER_NAME']."/login",true,301);
-            exit();
+                    if(!file_exists($uploadDir) || !is_writable($uploadDir)) {
+                        throw new Exception("Uploadin g directory is not exist or file is not writable");
+                    }
+
+
+                    $photoName  = uniqid()."_".basename($photo['name']);
+                    $photoTmpPath = $photo['tmp_name'];
+                    $photoPath = $uploadDir . $photoName;
+
+                    move_uploaded_file($photoTmpPath, $photoPath);
+                }
+            
+                $sqlInsert = "INSERT INTO users (fname, lname, pass, phno, email, gender, pin, photo, terms, adress) VALUES ('$fname','$lname','$pass','$phno','$email','$gender','$pin','$photoPath','$terms','$adress')";
+
+                mysqli_query($conn,$sqlInsert);
+                
+
+                    //for registration pop up
+                $_SESSION['registration'] = "registered Successfully";
+                // location will came back to this page itself ,it prevents from storing data in to json file while reloading
+                header("Location: http://".$_SERVER['SERVER_NAME']."/login",true,301);
+                exit();
+            }
         }
-    }
-    catch(Exception $e) {
-        my_error_log('FATAL', $e->getMessage(),$e->getFile(),$e->getLine());
-    }
+        catch(Exception $e) {
+            my_error_log('FATAL', $e->getMessage(),$e->getFile(),$e->getLine());
+        }
     ?>
 
 
@@ -217,7 +173,7 @@
 
                     <div class="input-name">
                         <label for="">Address</label>
-                        <input type="text" placeholder="Address" class="inp-addr" id="address" name="address">
+                        <input type="text" placeholder="Address" class="inp-addr" id="address" name="adress">
                     </div>
 
                     <div class="input-name">

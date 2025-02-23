@@ -1,4 +1,7 @@
 <?php 
+
+    include __DIR__.'/database.php';
+
         // for checking in the required fields are left empty
     $isEmpty = false;
 
@@ -42,29 +45,17 @@
         $isEmpty = true;
     }
    
-        //checking email is unique or not
-    
+    //     //checking email is unique or not
     $isUniqueUser = true;
-    $jsonFile = $_SERVER['DOCUMENT_ROOT'] . '/data.json';
+    $sqlUnique = "SELECT count(email) as 'email' FROM users WHERE email = '$email'";
 
-    if (file_exists($jsonFile) && file_get_contents($jsonFile)) {
-        $jsonData = file_get_contents($jsonFile);
-        $data = json_decode($jsonData, true);
-    } else {
-        $data = [];
+    $data = mysqli_query($conn,$sqlUnique);
+    $isPresent = mysqli_fetch_assoc($data);
+    // echo var_dump((int)$isPresent['email'] != 0);
+    if((int)$isPresent['email'] != 0) {
+        $isUniqueUser = false;
+        $emailErr = "**This email is already registered..";
+    }
     
-        file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT));
-    }
-
-    for($i = 1;$i <= sizeof($data);$i++) {
-        if($email == $data[$i]['email']) {
-            $isUniqueUser = false;
-            $emailErr = "**This email is already registered..";
-            break;
-        }
-    }
 
 ?>
-
-
-

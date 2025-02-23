@@ -58,7 +58,7 @@ var favouriteModule = (function($){
                     success: function(response) {
                         //add row in the fav table
                         var newRow = $("<tr class='temp' >''</tr>");
-                        newRow.append($(`<td>${favData.id}</td>`))
+                        newRow.append($(`<td style="display: none;">${favData.id}</td>`))
                         newRow.append($(`<td>${favData.name}</td>`))
                         newRow.append($(`<td>${favData.item}</td>`))
                         newRow.append($(`<i class="fa-solid fa-trash  btnDelete" style="color: #ff0a0a;"></i>`));
@@ -77,12 +77,11 @@ var favouriteModule = (function($){
         $(".container2").on('click', '.btnDelete', function() {
             var row = $(this).closest('tr'); 
             var slno = row.find('td:eq(0)').text();
-            var id = row.index();
+            // var id = row.index();
             $.ajax({
                 url: '/php/deleteFavourite.php', 
                 type: 'GET', //  GET request sending to php
-                data: {
-                    
+                data: {                    
                     action: 'delete', 
                     id: slno,// in array it is 0-base indexing and row in table row 1-base indexing
                 },
@@ -110,7 +109,7 @@ var favouriteModule = (function($){
                         action : 'logout'
                     },
                     success : function(){
-                        window.location.href = `http://${window.location.hostname}//login`;
+                        window.location.href = `http://${window.location.hostname}/login`;
                     }
                 });
             });

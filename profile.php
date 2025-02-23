@@ -12,9 +12,14 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <?php 
-       if(session_status() == PHP_SESSION_NONE) {
-            session_start();
+       if(session_status() == PHP_SESSION_NONE){
+           session_start();
        }
+
+        if( !$_SESSION['userId']) {
+            header("Location: http://".$_SERVER['SERVER_NAME']."/login",true,301);
+            exit();
+        }
 
        if(isset($_SESSION['login']) ) { ?>
             <div class="loginPopup">
@@ -33,34 +38,16 @@
 
     <?php
         include __DIR__.'/php/exception.php';
+        include __DIR__.'/php/database.php';
             //if session expired redirect to the login page
-        if( !$_SESSION['userId']) {
-            header("Location: http://".$_SERVER['SERVER_NAME']."/login",true,301);
-            exit();
-        }
-        $jsonFile = $_SERVER['DOCUMENT_ROOT'] . '/data.json';
-        try{
-            if (file_exists($jsonFile) && file_get_contents($jsonFile)) {
-                $jsonData = file_get_contents($jsonFile);
-                $data = json_decode($jsonData, true);
-            } else {
-                $data = [];
-                throw new Exception("File not found.....");
-                file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT));
-            }
-        }
-        catch(Exception $e){
-            my_error_log('FATAL', $e->getMessage(),$e->getFile(),$e->getLine());
-        }
         
-
+       
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $fname = isset($_POST['fname']) ? $_POST['fname'] : $_SESSION['fname'];
             $lname = isset($_POST['lname']) ? $_POST['lname'] : $_SESSION['lname'];
             $email = isset($_POST['email']) ? $_POST['email'] : $_SESSION['email'];
             $phno = isset($_POST['phno']) ? $_POST['phno'] : $_SESSION['phno'];
-            $address = isset($_POST['address']) ? $_POST['address'] : $_SESSION['address'];
-            $i = 0;
+            $adress = isset($_POST['adress']) ? $_POST['adress'] : $_SESSION['adress'];
 
             $isValid = true;
             $nameErr = "";
@@ -83,43 +70,20 @@
             }
 
             if($isValid == true) {
-                $i = $_SESSION['userId'];
-                    if ($data[$i]['email'] == $_SESSION['email']) {
-                        $data[$i]['fname'] = $fname;
-                        $data[$i]['lname'] = $lname;
-                        $data[$i]['email'] = $email;
-                        $data[$i]['phno'] = $phno;
-                        $data[$i]['address'] = $address;
-                        //Update both session data and data.json
-                        $_SESSION['fname'] = $fname;
-                        $_SESSION['lname'] = $lname;
-                        $_SESSION['email'] = $email;
-                        $_SESSION['phno'] = $phno;
-                        $_SESSION['address'] = $address;
-                        
-                    }
-            }
-                //click update button For reindexing SL no of the favourite data 
-            if($data[$_SESSION['userId']]['favourite']) {
-                    //copying the values to the favourites array with default index(if we had deleted before)
-                $favourites = array_values($data[$_SESSION['userId']]['favourite']); 
-                $newFavourites = [];
-                    //$index => $fav works like key value pair index and correspoding favourite
-                foreach ($favourites as $index => $fav) {
-                    $newFavourites[$index + 1] = [
-                        'id' => $index + 1, 
-                        'name' => $fav['name'],
-                        'item' => $fav['item']
-                    ];
-                }
-                    //update the new indexed array to the old
-                $data[$_SESSION['userId']]['favourite'] = $newFavourites;
-                    //update also to the session to get current indexed in js from the hidden input
-                $_SESSION['totalFavourite'] = count($newFavourites);
-            }
+                $userId = $_SESSION['userId'];
 
-            $jsonData = json_encode($data, JSON_PRETTY_PRINT);
-            file_put_contents($jsonFile, $jsonData);
+                if ($userId) {
+                    $sql = "UPDATE users SET fname='$fname',lname='$lname',email='$email',phno='$phno',adress='$adress' WHERE userId='$userId'";
+                    mysqli_query($conn,$sql);
+                    //Update both session data and data.json
+                    $_SESSION['fname'] = $fname;
+                    $_SESSION['lname'] = $lname;
+                    $_SESSION['email'] = $email;
+                    $_SESSION['phno'] = $phno;
+                    $_SESSION['adress'] = $adress;
+                }
+            }
+                
 
             
         }
@@ -131,19 +95,14 @@
             $favouriteItem = $_GET['favData']['item'];
             $rowId = $_GET['rowId'];
 
-            $j = $_SESSION['userId'];
+            $userId = $_SESSION['userId'];
 
-                if ($data[$j]['email'] == $_SESSION['email']) {
-                    
-                    $data[$j]['favourite'][$rowId] = [
-                        'id'=> $rowId,
-                        'name' => $favouriteName,
-                        'item' => $favouriteItem
-                    ];
-                    $_SESSION['totalFavourite'] = $rowId;
+            $sqlf = "INSERT INTO favourites (userId,favName ,favItem) VALUES ('$userId','$favouriteName','$favouriteItem')";
 
-                    file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT));
-                }
+            mysqli_query($conn,$sqlf) ;  
+            
+            $_SESSION['totalFavourite'] = $rowId;
+
             
         }
 
@@ -194,9 +153,9 @@
                 </div>
                 <span class="err-msg" id="pfemail-err"> <?php if(isset($email)) echo $emailErr?></span>
 
-                <div class="inpDiv" id="addresspf">
+                <div class="inpDiv" id="adresspf">
                     <i class="fa-solid fa-location-dot fa-lg icon"></i>
-                    <input type="text" name="address" id="addressProfile" class="profileInput" value="<?php echo $_SESSION['address'] ?>">
+                    <input type="text" name="adress" id="adressProfile" class="profileInput" value="<?php echo $_SESSION['adress'] ?>">
                 </div>
                 
 
@@ -222,20 +181,23 @@
         <table id="table">
             <thead>
                 <tr>
-                    <th>SL No.</th>
+                    <!-- <th>SL No.</th> -->
                     <th>Name</th>
                     <th>Item</th>
                     <th>Action</th>
                 </tr>
                 <?php
-                $k = $_SESSION['userId'];
+                $userId = $_SESSION['userId'];
                 
-                if(isset($data[$k]['favourite'])) {
-                    foreach ($data[$k]['favourite'] as $row){ ?>
+                $sqlf = "SELECT * FROM favourites WHERE userId = '$userId'";
+                $favouriteData = mysqli_query($conn,$sqlf);
+
+                if(mysqli_num_rows($favouriteData) > 0) {
+                    while($row = mysqli_fetch_assoc($favouriteData)) { ?>
                         <tr>
-                            <td> <?php echo htmlspecialchars($row['id']) ?></td>
-                            <td> <?php echo htmlspecialchars($row['name']) ?></td>
-                            <td> <?php echo htmlspecialchars($row['item']) ?></td>
+                            <td style="display: none;"> <?php echo htmlspecialchars($row['id']) ?></td>
+                            <td> <?php echo htmlspecialchars($row['favName']) ?></td>
+                            <td> <?php echo htmlspecialchars($row['favItem']) ?></td>
                             <td> <i class="fa-solid fa-trash  btnDelete" style="color: #ff0a0a;"></i></td>
                         </tr>
                 <?php } } ?>
@@ -247,7 +209,7 @@
             <tbody>
                 <!-- Prepend to this row -->
                 <tr class="emptyRow" style="background-color: black;">
-                    <td colspan="4" style=" text-align: center;" ><button id="openForm">New</button></td>
+                    <td colspan="3" style=" text-align: center;" ><button id="openForm">New</button></td>
                 </tr>
             </tbody>
         </table>
@@ -287,6 +249,7 @@
     <script src="./js/favouriteModule.js"></script>
     <script src="./js/validationModule.js"></script>
     <script src="./js/pageModule.js"></script>
+    
 </body>
 
 </html>
