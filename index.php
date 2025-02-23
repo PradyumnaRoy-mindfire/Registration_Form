@@ -1,3 +1,4 @@
 <?php
-echo "hello world";
+echo "Helo";
+header("location: Form/login");
 ?>

@@ -174,12 +174,46 @@ input:hover {
     }
 }
 
+.submitPopup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(1);
+    background-color:bisque;
+    color: black;
+    box-shadow: 10px 10px 5px rgb(138, 135, 135);
+    width: 25%;
+    height: calc(30px + 15vw);
+    border: 2px solid black;
+    z-index: 2;
+   
+}
+
+.submitContent {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: calc(1px + 0.5vw);
+    padding: calc(1px + 0.5vw);
+}
+#successIcon {
+    position: relative;
+    left: 35%;
+    font-size: calc(5px + 5vw);
+    margin: calc(1px + 0.2vw);
+    padding: calc(1px + 0.2vw);
+}
+.submitContent>h4,p {
+    padding: calc(1px + 0.5vw);
+}
+.submitContent>p {
+    font-size: calc(3px + 1vw);
+}
 
 .errorEffect {
     border: 2px solid red;
     box-shadow: 0px 0px 20px 3px red;
 }
 .recomandation {
+    color: #fdd607;
     font-size: calc(1px + 0.9vw);
     font-family: sans-serif;
     display: none;
@@ -202,89 +236,6 @@ input:hover {
     cursor: pointer;
 }
 
-
-
-
-.loginPopup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%) scale(1);
-    background-color:bisque;
-    color: black;
-    box-shadow: 10px 10px 5px rgb(138, 135, 135);
-    width: 25%;
-    height: calc(30px + 15vw);
-    display: none;
-    border: 2px solid black;
-    z-index: 2;
-}
-
-.loginContent {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: calc(1px + 0.5vw);
-    padding: calc(1px + 0.5vw);
-}
-#successIcon {
-    position: relative;
-    left: 35%;
-    font-size: calc(5px + 5vw);
-    margin: calc(1px + 0.2vw);
-    padding: calc(1px + 0.2vw);
-}
-.loginContent>h4,p {
-    padding: calc(1px + 0.5vw);
-}
-.loginContent>p {
-    font-size: calc(3px + 1vw);
-}
-.deleteContent {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: calc(1px + 0.5vw);
-    padding: calc(1px + 0.5vw);
-}
-#deleteIcon {
-    position: relative;
-    left: 35%;
-    font-size: calc(5px + 5vw);
-    margin: calc(1px + 0.2vw);
-    padding: calc(1px + 0.2vw);
-}
-
-.btn {
-    border: none;
-    margin: 3px;
-}
-#btnCancelPopup {
-    background-color: beige;
-    margin: 3px;
-    display: flex;
-    float: right;
-    padding: calc(1px + 0.5vw);
-    border: none;
-    border-radius: 15px;
-    border: 2px solid grey;
-    box-shadow: 0 9px #999;
-}
-#btnCancelPopup:active {
-    box-shadow: 0 5px #555151;
-    transform: translateY(4px);
-}
-#btnDeletePopup {
-    background-color: #ff3333;
-    margin: 3px;
-    display: flex;
-    float: right;
-    padding: calc(1px + 0.5vw);
-    border: none;
-    border-radius: 15px;
-    border: 2px solid grey;
-    box-shadow: 0 9px #999;
-}
-#btnCancelPopup:active {
-    box-shadow: 0 5px #555151;
-    transform: translateY(4px);
-}
 
 .showPopup {
     display: block;
