@@ -60,7 +60,7 @@
                         $_SESSION['totalFavourite'] = count($data[$i]['favourite']);
 
                         $_SESSION['login'] = "Login successfull";
-                        header("Location: http://".$_SERVER['SERVER_NAME']."/ /php/profile",true,302);   //301 for permanent redirection ,302 for temporary
+                        header("Location: http://".$_SERVER['SERVER_NAME']."/profile",true,302);   //301 for permanent redirection ,302 for temporary
                         exit();
                     }
                 }
@@ -84,7 +84,7 @@
             <h2>Login Form</h2>
             <div class="form-container">
 
-                <form action="/php/login.php" id="form" method="post">
+                <form action="/login.php" id="form" method="post">
                     <div class="input-name">
                         <label for="email" class="redStar">Email</label>
 

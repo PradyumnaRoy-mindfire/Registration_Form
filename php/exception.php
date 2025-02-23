@@ -3,7 +3,8 @@
 
 function my_error_log($error_level, $error_message, $fileName, $lineNo)
 {
-    $logFile = __DIR__ . '/Log/error.log';
+    $logFile = $_SERVER['DOCUMENT_ROOT'].'/Log/error.log';
+    // echo $logFile;
 
     $timestamp = date('d-m-Y H:i:s');
 

@@ -48,7 +48,7 @@ var favouriteModule = (function($){
                     'item' : item               //To use a variable as key we have take []
                 }
                 $.ajax({
-                    url:'/test/Form/php/profile.php',
+                    url:'/profile.php',
                     type:"GET",
                     data: {
                         action :'storeFavouriteData',
@@ -79,7 +79,7 @@ var favouriteModule = (function($){
             var slno = row.find('td:eq(0)').text();
             var id = row.index();
             $.ajax({
-                url: '/test/Form/php/deleteFavourite.php', 
+                url: '/php/deleteFavourite.php', 
                 type: 'GET', //  GET request sending to php
                 data: {
                     
@@ -104,13 +104,13 @@ var favouriteModule = (function($){
                 $('.logoutPopup').hide(500);
 
                 $.ajax({
-                    url:'/test/Form/php/profile.php',
+                    url:'/profile.php',
                     type : 'GET',
                     data : {
                         action : 'logout'
                     },
                     success : function(){
-                        window.location.href = `http://${window.location.hostname}//Form/login`;
+                        window.location.href = `http://${window.location.hostname}//login`;
                     }
                 });
             });

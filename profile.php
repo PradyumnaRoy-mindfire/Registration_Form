@@ -32,7 +32,7 @@
 
 
     <?php
-        include __DIR__.'/exception.php';
+        include __DIR__.'/php/exception.php';
             //if session expired redirect to the login page
         if( !$_SESSION['userId']) {
             header("Location: http://".$_SERVER['SERVER_NAME']."/login",true,301);

@@ -10,6 +10,7 @@
     $terms = isset($_POST['terms']) ? true : false;
 
     $fnameErr = "";
+    $lnameErr = "";
     $passErr = "";
     $phnoErr = "";
     $emailErr = "";
@@ -44,7 +45,7 @@
         //checking email is unique or not
     
     $isUniqueUser = true;
-    $jsonFile = $_SERVER['DOCUMENT_ROOT'] . '/Form/data.json';
+    $jsonFile = $_SERVER['DOCUMENT_ROOT'] . '/data.json';
 
     if (file_exists($jsonFile) && file_get_contents($jsonFile)) {
         $jsonData = file_get_contents($jsonFile);
