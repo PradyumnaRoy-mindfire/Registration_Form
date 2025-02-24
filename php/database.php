@@ -37,6 +37,7 @@ $sql = "CREATE TABLE IF NOT EXISTS favourites (
     userId INT,
     favName VARCHAR(50),
     favItem VARCHAR(100),
+    like_count INT DEFAULT 0,
     FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE   
 );";
 

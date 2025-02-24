@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/profile.css">
     <title>Profile</title>
-
+        <!-- font awesome cdn -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -124,14 +124,14 @@
 
             <form action="/profile.php" id="profile-form" method="POST">
                 <div class="profileIcon">
-                    <i class="fa-solid fa-circle-user fa-flip fa-2xl" style="color: #f37932;"></i>
+                    <i class="fa-solid fa-circle-user fa-flip fa-2xl" style="color:rgb(204, 185, 174);"></i>
                     
                     <img src="<?php echo substr($_SESSION['photo'], 13) ?>" alt="" class="photo fa-circle-user  fa-2xl ">
                 </div>
                 <h3>My Profile </h3>
                 <!--For Favourite Item -->
                 <div class="favourite">
-                    <i class="fa-regular fa-heart fa-xl favouriteIcon" style="color: #f53d1c;" title="Favourite"></i>
+                    <i class="fa-regular fa-heart fa-xl favouriteIcon" style="color:rgb(255, 255, 255);" title="Favourite"></i>
                 </div>
 
                 <div class="inpDiv " id="username">
@@ -161,7 +161,7 @@
 
                 <!-- for lo g out -->
                 <div class="logout">
-                    <i class="fa-solid fa-right-from-bracket fa-lg logoutIcon" style="color: #f53d1c;" title="Log out"></i>
+                    <i class="fa-solid fa-right-from-bracket fa-lg logoutIcon" style="color:rgb(241, 241, 241);" title="Log out"></i>
                 </div>
 
                 <div class="update inpDiv">
@@ -198,7 +198,7 @@
                             <td style="display: none;"> <?php echo htmlspecialchars($row['id']) ?></td>
                             <td> <?php echo htmlspecialchars($row['favName']) ?></td>
                             <td> <?php echo htmlspecialchars($row['favItem']) ?></td>
-                            <td> <i class="fa-solid fa-trash  btnDelete" style="color: #ff0a0a;"></i></td>
+                            <td> <i class="fa-solid fa-trash  btnDelete favBtn" style="color: #ff0a0a;"></i> <i class="fa-solid fa-share-from-square favBtn btnShare" style="color:rgb(52, 151, 10);"></i> </td>
                         </tr>
                 <?php } } ?>
 
@@ -232,7 +232,7 @@
 
     <div class="logoutPopup">
         <div class="logoutContent">
-            <span><i class="fa-solid fa-circle-exclamation fa-shake" id="logoutWarnIcon"style="color: #f56224;" title="Logout"></i></i></span>
+            <span><i class="fa-solid fa-circle-exclamation fa-shake" id="logoutWarnIcon"style="color:rgb(212, 96, 0);" title="Logout"></i></i></span>
             <h4>Log Out</h4>
             <p>Are you sure, you want to log out?</p>
             <div class="btn">
@@ -245,6 +245,9 @@
 
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js
+"></script>
     <script src="./js/script.js"></script>
     <script src="./js/favouriteModule.js"></script>
     <script src="./js/validationModule.js"></script>

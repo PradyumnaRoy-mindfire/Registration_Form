@@ -156,6 +156,8 @@ var pageModule = (function($){
         $(".container").addClass("doBlur");
         $('.logoutPopup').show();
     }
+
+    
     
     function init() {
         removePopup();

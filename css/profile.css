@@ -4,7 +4,7 @@
 }
 body {
     font-size: calc(5px + 1vw);
-    color: rgb(41, 37, 37);
+    color: rgb(255, 255, 255);
     background-image: url("./whiteBackground.jpg");
     background-size: cover;
 }
@@ -14,19 +14,19 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%) scale(1);
-    border: 2px solid red;
+    border: 2px solid rgb(116, 111, 111);
     width: 30%;
     display: flex;                      
     justify-content: center;
     border-radius: 8%;
-    background-color: rgb(252, 221, 181);
+    background-color: rgb(0, 0, 0);
 }
 .login-box {
     padding: 0px 20px 20px 20px;
     width: 80%;
     margin: 20px;
-    background-color: rgb(240, 193, 132);
-    box-shadow: 0px 0px 10px 8px rgb(221, 94, 55);
+    background-color: rgb(142, 146, 146);
+    box-shadow: 0px 0px 10px 8px rgb(255, 255, 255);
     display: flex;
     justify-content: center;
 }  
@@ -44,6 +44,8 @@ input{
     height: calc(5px + 2vw);
     width: 80%;
     background: transparent;
+    color: white;
+    text-decoration: none;
 }
 #fnameProfile,#lnameProfile {
     width: 40%;
@@ -63,9 +65,14 @@ input{
 }
 h3 {
     padding-top: calc(10px + 2vw);
+    margin-bottom: calc(2px + 1vw);
+    font-size: calc(5px + 2vw);
     font-family:'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
+    background: linear-gradient(to right ,red,blue);
+    background-clip: text;
+    color: transparent;
 }
 .profileIcon {
     font-size: calc(10px + 2vw);
@@ -162,12 +169,23 @@ tr:nth-child(even) {
 #favouriteForm>input::placeholder{
     padding-left: 10px;
 }
+#profile-form>input::placeholder{
+    color: white;
+}
 
 .btnDelete {
     font-size: calc(1px + 1.5vw);
     margin: 8px;
+    margin-left: 0px;
 }
+.btnShare {
+    font-size: calc(1px + 1.5vw);
+}
+
 .btnDelete:hover {
+    transform: scale(1.1);
+}
+.btnShare:hover {
     transform: scale(1.1);
 }
 .displayBlock{
@@ -202,11 +220,11 @@ tr:nth-child(even) {
 }
 #btnUpdate:hover {
     background: linear-gradient(45deg,#ff3333,#4f1919);
-    box-shadow: 0px 0px 6px 6px rgb(193 115 50);
+    box-shadow: 0px 0px 6px 6px rgb(68, 56, 45);
     transform: scale(1.1);
 }
 .container:not(:focus-within){
-    box-shadow: 0px 0px 10px 10px rgb(226, 122, 90);
+    box-shadow: 0px 0px 10px 10px rgb(180, 155, 155);
 }
 .dropdown-form {
     display: none;
@@ -335,6 +353,7 @@ tr:nth-child(even) {
     border: none;
     margin: 3px;
 }
+
 #btnCancelPopup {
     background-color: beige;
     margin: 3px;

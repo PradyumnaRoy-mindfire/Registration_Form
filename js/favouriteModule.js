@@ -61,9 +61,11 @@ var favouriteModule = (function($){
                         newRow.append($(`<td style="display: none;">${favData.id}</td>`))
                         newRow.append($(`<td>${favData.name}</td>`))
                         newRow.append($(`<td>${favData.item}</td>`))
-                        newRow.append($(`<i class="fa-solid fa-trash  btnDelete" style="color: #ff0a0a;"></i>`));
+                        newRow.append($(`<i class="fa-solid fa-trash  btnDelete btn" style="color: #ff0a0a;"></i> <i class="fa-solid fa-share-from-square btnShare btn" style="color:rgb(52, 151, 10);">`));    
                         $(".emptyRow").before(newRow);
                         $("#favouriteId").val(parseInt(id)+1);
+
+                        
                     }
                 });
 
@@ -123,10 +125,45 @@ var favouriteModule = (function($){
         });
     }
 
+    function copy() {
+        $('.btnShare').on('click',function(){
+            var row = $(this).closest('tr'); 
+            let name = row.find('td:eq(1)').text();
+            let item = row.find('td:eq(2)').text();
+            let userName = $('#fnameProfile').val();
+            navigator.clipboard.writeText(`Favourite ${name} - ${item}`);
+            swal.fire({
+                title: "Hey! there..",
+                text: `${userName} here, this favourite has copied to your clipboard..`,
+                icon: "success",
+            });
+        });
+    }
+
+    function dashboardLike() {
+        $('.btnLike').on('click',function(){
+            count = $("#showCount").text();
+            console.log(count);
+            $.ajax({
+                url : '/index.php',
+                type : "GET",
+                data : {
+                    action : 'like',
+                    count : parseInt(count)+1,
+                },
+                success : function(){
+                    $('#showCount').text(parseInt(count)+1);
+                }
+            });
+        });
+    }
+
     function init(){
        favouriteDelete();
        logOut();
        storeFavouriteData();
+       copy();
+       dashboardLike();
     }
     return {
         init:init,
